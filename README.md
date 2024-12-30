@@ -213,15 +213,16 @@ GROUP BY pizza_types.category
 ORDER BY ROUND(SUM(price * quantity)) DESC;
 ```
 12. **Analyze the commulative revenue generated over time.**
-    ```sql
-select order_date , sum(revenue) over (order by order_date) as cum_revenue from
- (select orders.order_date , round(sum(pizzas.price *order_details.quantity) , 2) as revenue  from
- pizzas join order_details on
- pizzas.pizza_id = order_details.pizza_id join
- orders on
+```sql
+SELECT order_date , SUM(revenue) OVER (ORDER BY order_date)AS cum_revenue FROM
+ (SELECT orders.order_date , ROUND(SUM(pizzas.price *order_details.quantity) , 2) AS revenue  FROM
+ pizzas JOIN  order_details ON
+ pizzas.pizza_id = order_details.pizza_id JOIN
+ orders ON
  order_details.order_id = orders.order_id 
- group by order_date) as sales;
+GROUP BY order_date) AS sales;
 ```
+
 13. **Determine the top 3 most ordered pizza types based on revenue for each pizza category.**
 ```sql
 SELECT name , revenue FROM 
